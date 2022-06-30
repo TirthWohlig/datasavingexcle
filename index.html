@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML form to Google Sheet</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+
+  <body>
+    <h1 id="msg">Hello</h1>
+    <form>
+      <input type="text" name="name" placeholder="Name" /><br /><br />
+      <input type="email" name="email" placeholder="Email" /><br /><br />
+      <input type="tel" name="phone" placeholder="Phone" /><br /><br />
+      <input type="submit" id="sub" />
+    </form>
+    <script>
+      let form = document.querySelector("form");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        document.querySelector("#sub").value = "Submiting..";
+        let data = new FormData(form);
+		axios({
+			method: 'post',
+			url: 'https://script.google.com/macros/s/AKfycbyetYKKok4kgjCyLjP5fvy2MbYzxA6BGgi5DB-A4rSPUOJoDIHA2_1s6PlUqyISulGR/exec',
+			data: data
+		})
+          .then((res) => {
+            res.text();
+            console.log("hello", res);
+          })
+          .then((data) => {
+            document.querySelector("#msg").innerHTML = data;
+            document.querySelector("#sub").value = "Submit";
+          });
+      });
+    </script>
+  </body>
+</html>
